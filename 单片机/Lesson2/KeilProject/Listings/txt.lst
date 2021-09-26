@@ -1,0 +1,74 @@
+C51 COMPILER V9.57.0.0   TXT                                                               09/22/2021 16:40:55 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE TXT
+OBJECT MODULE PLACED IN .\Objects\txt.obj
+COMPILER INVOKED BY: E:\APP\keil5\KEIL_5\C51\BIN\C51.EXE txt.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\txt.lst) TABS(2) OBJECT(.\Objects\txt.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #define uint unsigned int
+   3          
+   4          sbit P11 = P1^1;
+   5          sbit P12 = P1^2;
+   6          sbit P00 = P0^0;
+   7          sbit P20 = P2^0;
+   8          
+   9          int ge[] = { 0x40,0x79,0x24,0x30,0x19,0x12,0x02,0x78,0x00,0x18};//带小数点0-9
+  10          int shi[] = {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x98};//不带小数点0-9
+  11          
+  12          void delay(uint ms)
+  13          {
+  14   1        uint i,j;
+  15   1        for(i=0;i<ms;i++)
+  16   1        {
+  17   2          for(j=0;j<500;j++)
+  18   2          {
+  19   3            
+  20   3          }
+  21   2        }
+  22   1          
+  23   1        
+  24   1      }
+  25          void main()
+  26          {
+  27   1        int i,j;
+  28   1        while(1)
+  29   1        {
+  30   2          P2 =ge[0];
+  31   2          P0 = shi[0];
+  32   2          delay(200);
+  33   2        
+  34   2          for(i=0;i<=9;i++)
+  35   2          {
+  36   3            P0 = shi[i];
+  37   3            delay(50);
+  38   3            for(j=0;j<=9;j++)
+  39   3            {
+  40   4              P2 = ge[j];
+  41   4              delay(50);
+  42   4            }
+  43   3            
+  44   3          }
+  45   2          
+  46   2          
+  47   2        }
+  48   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    120    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.57.0.0   TXT                                                               09/22/2021 16:40:55 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     40       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
