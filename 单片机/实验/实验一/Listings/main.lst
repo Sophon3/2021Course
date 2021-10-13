@@ -1,0 +1,53 @@
+C51 COMPILER V9.57.0.0   MAIN                                                              10/13/2021 14:54:25 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\APP\keil5\KEIL_5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*
+   2          ********************************
+   3                  移位实现流水灯
+   4          ********************************
+   5          */
+   6          #include<reg52.h> //头文件
+   7          
+   8          void delay(int t) //定义延时函数
+   9          {
+  10   1        int y;
+  11   1        for(;t>0;t--)
+  12   1        for(y=0;y<200;y++);
+  13   1      }
+  14          
+  15          void main(void) //主函数
+  16          {
+  17   1        while(1)
+  18   1        {
+  19   2          int i;
+  20   2          P2 = 0xfe; //初始化P0端口，由开发板得知，低电平灯亮
+  21   2          delay(100);
+  22   2          for(i=0;i<8;i++) // 循环一次，所亮的灯移动一位
+  23   2          {
+  24   3            P2 = (P2<<1)+1; // 移位加一
+  25   3            delay(100);
+  26   3          }
+  27   2        }
+  28   1      }
+  29          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     83    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
