@@ -1,0 +1,50 @@
+C51 COMPILER V9.57.0.0   MAIN                                                              10/31/2021 10:55:18 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: E:\APP\keil5\KEIL_5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          /***************************************************************************
+   2          实验名称： 流水灯实验 数组实现
+   3          ***************************************************************************/
+   4          
+   5          #include<intrins.h>
+   6          #include<reg52.h>
+   7          #define uchar unsigned char 
+   8          #define uint unsigned int
+   9          
+  10          void mDelay(uint Delay)    //延时
+  11          { uint i;
+  12   1        for(;Delay > 0;Delay--)
+  13   1          for(i = 0;i < 110;i++);
+  14   1      }
+  15          uchar display[8] ={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f}; 
+  16          void main(void)
+  17          {
+  18   1        unsigned char i;
+  19   1        while(1)
+  20   1        {
+  21   2          for(i =0;i<8;i++)
+  22   2          {
+  23   3            P0 = display[i];
+  24   3            mDelay(200);
+  25   3          }
+  26   2        }
+  27   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     53    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
