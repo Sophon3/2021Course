@@ -1,0 +1,158 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        10/29/2021  14:20:11  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\定数管.obj TO .\Objects\定时数码管 PRINT (.\Listings\定时数码管.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\定数管.obj (定数筥)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?UIDIV)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\定时数码管 (定数筥)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         ?DT?定数筥
+            IDATA   001CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0055H     UNIT         ?C?LIB_CODE
+            CODE    00EFH     002DH     UNIT         ?PR?MAIN?定数筥
+            CODE    011CH     0027H     UNIT         ?PR?_DELAY?定数筥
+            CODE    0143H     0020H     UNIT         ?PR?TIMER0?定数筥
+            CODE    0163H     001BH     UNIT         ?C_INITSEG
+            CODE    017EH     0010H     UNIT         ?PR?TIMER0INIT?定数筥
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\定时数码管 (定数筥)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?定数筥
+  +--> ?C_INITSEG
+
+?PR?MAIN?定数筥
+  +--> ?PR?_DELAY?定数筥
+
+
+
+UNRESOLVED EXTERNAL SYMBOLS:
+   TIMER0LNIT
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/29/2021  14:20:11  PAGE 2
+
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\定时数码管 (定数筥)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        定数筥
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        select
+  B:00A8H.7       PUBLIC        EA
+  C:0124H         PUBLIC        _delay
+  C:00EFH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  D:0010H         PUBLIC        digivalue
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0143H         PUBLIC        timer0
+  B:0088H.4       PUBLIC        TR0
+  D:001AH         PUBLIC        i
+  C:017EH         PUBLIC        timer0Init
+  -------         PROC          TIMER0INIT
+  C:017EH         LINE#         9
+  C:017EH         LINE#         10
+  C:0181H         LINE#         11
+  C:0184H         LINE#         12
+  C:0187H         LINE#         13
+  C:0189H         LINE#         14
+  C:018BH         LINE#         15
+  C:018DH         LINE#         16
+  -------         ENDPROC       TIMER0INIT
+  -------         PROC          L?0017
+  -------         ENDPROC       L?0017
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0124H         LINE#         17
+  C:0124H         LINE#         18
+  C:0124H         LINE#         20
+  C:012DH         LINE#         21
+  C:0130H         LINE#         22
+  C:0142H         LINE#         23
+  -------         ENDPROC       _DELAY
+  -------         PROC          TIMER0
+  C:0143H         LINE#         25
+  C:0147H         LINE#         27
+  C:014FH         LINE#         28
+  C:0158H         LINE#         29
+  C:0158H         LINE#         30
+  C:015EH         LINE#         31
+  C:015EH         LINE#         34
+  -------         ENDPROC       TIMER0
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/29/2021  14:20:11  PAGE 3
+
+
+  -------         PROC          MAIN
+  C:00EFH         LINE#         35
+  C:00EFH         LINE#         36
+  C:00EFH         LINE#         37
+  C:00F2H         LINE#         38
+  C:00F2H         LINE#         39
+  C:00F2H         LINE#         40
+  C:00F5H         LINE#         41
+  C:0103H         LINE#         42
+  C:0106H         LINE#         43
+  C:0109H         LINE#         44
+  C:0117H         LINE#         45
+  C:011AH         LINE#         46
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        定数筥
+
+  -------         MODULE        ?C?UIDIV
+  C:009AH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER0INIT?定数筥
+
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  TIMER0LNIT
+    MODULE:  .\Objects\定数管.obj (定数筥)
+
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  TIMER0LNIT
+    MODULE:  .\Objects\定数管.obj (定数筥)
+    ADDRESS: 00F0H
+
+Program Size: data=29.0 xdata=0 code=390
+LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)

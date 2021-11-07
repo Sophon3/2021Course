@@ -1,0 +1,69 @@
+C51 COMPILER V9.00   SHUMA                                                                 10/15/2021 16:50:19 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE SHUMA
+OBJECT MODULE PLACED IN .\Objects\shuma.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE shuma.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\shu
+                    -ma.lst) TABS(2) OBJECT(.\Objects\shuma.obj)
+
+line level    source
+
+   1          #include<reg52.h> 
+   2          #define uint unsigned int 
+   3          #define uchar unsigned char 
+   4          sbit DAT = P1^1;    //定义管脚P1.1
+   5          sbit CLK = P1^0;    //定义管脚P1.0
+   6          uchar code tab[] = {0xfc,0x60,0xda,0xf2,0x66,0xb6,0xbe,0xe0,
+   7                    0xff,0xf6,0xee,0x3e,0x9c,0x7a,0x9e,0x8e};//0-F在数码管上显示的16进制数
+   8          
+   9           
+  10          void sendbyte(uchar byte)       //发送字节的程序
+  11          {     
+  12   1        uchar num,c;  
+  13   1        num = tab[byte];        //取段码
+  14   1        for(c = 0; c < 8; c++)    //发送8位段码
+  15   1        { 
+  16   2          CLK = 0; 
+  17   2          DAT = num&0x01;     //发送最低位数据
+  18   2          CLK = 1; 
+  19   2          num>>=1;        //数据右移一位
+  20   2               
+  21   2        } 
+  22   1      } 
+  23          void mDelay(uint Delay) //延时
+  24          { uint i;
+  25   1        for(;Delay > 0;Delay--)
+  26   1          for(i = 0;i < 110;i++);
+  27   1      }
+  28          
+  29          
+  30          main() 
+  31          {  
+  32   1        unsigned char h; 
+  33   1        while(1){ 
+  34   2          for(h = 0; h < 16; h++){    //依次把tab中16个数输入进去
+  35   3            mDelay(50);       //调用延时程序，延时50毫秒 
+  36   3            sendbyte(h);        //调用发送字节的程序
+  37   3            mDelay(500);      //调用延时程序，延时500毫秒 
+  38   3          } 
+  39   2          h = 0; 
+  40   2        } 
+  41   1           
+  42   1      } 
+  43          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     85    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.00   SHUMA                                                                 10/15/2021 16:50:19 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

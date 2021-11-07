@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\shuma.obj" 
+TO ".\Objects\tesk2" 
+PRINT(".\Listings\tesk2.m51") RAMSIZE(256) 

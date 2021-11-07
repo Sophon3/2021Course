@@ -1,0 +1,100 @@
+C51 COMPILER V9.00   TEST                                                                  10/15/2021 16:47:15 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN .\Objects\test.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE test.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\test
+                    -.lst) TABS(2) OBJECT(.\Objects\test.obj)
+
+line level    source
+
+   1          #include<reg52.h> 
+   2          #define uint unsigned int 
+   3          #define uchar unsigned char 
+   4          #define DIGI P0         //宏定义，将P0口定义为数码管段选接口
+   5          #define SELECT P2       //宏定义，将P2定义为数码管选择口
+   6          sbit DAT = P1^1;    //定义管脚P1.1
+   7          sbit CLK = P1^0;    //定义管脚P1.0
+   8          
+   9          uchar code tab[] = {0xfc,0x60,0xda,0xf2,0x66,0xb6,0xbe,0xe0,
+  10                    0xff,0xf6,0xee,0x3e,0x9c,0x7a,0x9e,0x8e};      //0-F在数码管上显示的16进制数
+  11          
+  12          //uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07};
+  13          //显示的数字数组，依次为0，1，..，7
+  14          uchar digivalue[]={0x3F,0x3F,0x4F,0x06,0x3F,0x5B,0x5B,0x6D};
+  15          
+  16          uchar select[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80}; 
+  17          
+  18          //延时
+  19           void Delay(uint delay){  
+  20   1         uint i;
+  21   1         for(;delay > 0;delay--)
+  22   1           for(i = 0;i < 110;i++);
+  23   1      }
+  24          
+  25          void sendbyte(uchar byte)       //发送字节的程序
+  26          {     
+  27   1        uchar num,c;  
+  28   1        num = tab[byte];        //取段码
+  29   1        for(c = 0; c < 8; c++)    //发送8位段码
+  30   1        { 
+  31   2          CLK = 0; 
+  32   2          DAT = num&0x01;     //发送最低位数据
+  33   2          CLK = 1; 
+  34   2          num>>=1;        //数据右移一位
+  35   2               
+  36   2        } 
+  37   1      } 
+  38          
+  39          void delay() //延迟函数，决定数码管跳变的间隔时间
+  40          { 
+  41   1        uchar ii=200; //若发现数码管闪烁，调节这里即可
+  42   1        while(ii--);
+  43   1      }
+  44          
+  45          /*
+  46          main() 
+  47          {  
+  48            unsigned char h; 
+  49            while(1){ 
+  50              for(h = 0; h < 16; h++){    //依次把tab中16个数输入进去
+  51                Delay(50);        //调用延时程序，延时50毫秒 
+  52                sendbyte(h);        //调用发送字节的程序
+  53                Delay(500);     //调用延时程序，延时500毫秒 
+  54              } 
+C51 COMPILER V9.00   TEST                                                                  10/15/2021 16:47:15 PAGE 2   
+
+  55              h = 0; 
+  56            } 
+  57               
+  58          } 
+  59          */
+  60          main() //主函数
+  61          {
+  62   1        uchar i=0;
+  63   1        while(1)
+  64   1        { 
+  65   2          for(i=0;i<8;i++)    //8个数码管轮流显示
+  66   2          {
+  67   3            SELECT=select[i];   //选择第i个数码管
+  68   3            DIGI=0x90;
+  69   3            DIGI=digivalue[i];  //显示i
+  70   3            delay();
+  71   3          } 
+  72   2        }
+  73   1      }
+  74          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     93    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

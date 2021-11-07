@@ -1,0 +1,69 @@
+C51 COMPILER V9.00   DONGSHU                                                               10/29/2021 15:27:45 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE DONGSHU
+OBJECT MODULE PLACED IN .\Objects\dongshu.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE dongshu.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\d
+                    -ongshu.lst) TABS(2) OBJECT(.\Objects\dongshu.obj)
+
+line level    source
+
+   1          #include<reg52.h> 
+   2          #define uchar unsigned char   //宏定义，为方便编程
+   3          #define uint unsigned int
+   4          #define DIGI P0         //宏定义，将P0口定义为数码管段选接口
+   5          #define SELECT P2         //宏定义，将P2定义为数码管选择口
+   6          
+   7          uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7f,0x6f};
+   8          //uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07};
+   9          //显示的数字数组，依次为0，1，..，7
+  10          uchar select[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80}; //选择数码管数组，依次选择1，2，..，8
+  11          
+  12          void delay() //延迟函数，决定数码管跳变的间隔时间
+  13          { 
+  14   1        uchar ii=200; //若发现数码管闪烁，调节这里即可
+  15   1        while(ii--);
+  16   1      }
+  17          
+  18          main() //主函数
+  19          {
+  20   1        uchar i=0;
+  21   1        while(1)       //00310209
+  22   1        { 
+  23   2          for(i=0;i<8;i++)    //8个数码管轮流显示
+  24   2          {
+  25   3            switch(i)
+  26   3            {
+  27   4              case 0:SELECT=select[i]; DIGI=digivalue[0];break;
+  28   4              case 1:SELECT=select[i]; DIGI=digivalue[0];break;
+  29   4              case 2:SELECT=select[i]; DIGI=digivalue[3];break;
+  30   4              case 3:SELECT=select[i]; DIGI=digivalue[1];break;
+  31   4              case 4:SELECT=select[i]; DIGI=digivalue[0];break;
+  32   4              case 5:SELECT=select[i]; DIGI=digivalue[2];break;
+  33   4              case 6:SELECT=select[i]; DIGI=digivalue[1];break;
+  34   4              case 7:SELECT=select[i]; DIGI=digivalue[1];break;
+  35   4            }
+  36   3              //选择第i个数码管
+  37   3            //DIGI=0x90;
+  38   3              //显示i
+  39   3            delay();
+  40   3          } 
+  41   2        }
+  42   1      }
+  43          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    113    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     18    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.00   DONGSHU                                                               10/29/2021 15:27:45 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

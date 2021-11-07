@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\led2.obj" 
+TO ".\Objects\tesk4" 
+PRINT(".\Listings\tesk4.m51") RAMSIZE(256) 

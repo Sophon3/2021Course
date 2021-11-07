@@ -1,0 +1,69 @@
+C51 COMPILER V9.00   TEST                                                                  10/15/2021 16:10:12 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN .\Objects\test.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE test.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\test
+                    -.lst) TABS(2) OBJECT(.\Objects\test.obj)
+
+line level    source
+
+   1          #include<intrins.h>
+   2          #include<reg52.h>
+   3          #define uchar unsigned char 
+   4          #define uint unsigned int
+   5            
+   6          void Delay(uint delay){
+   7   1        uint i;
+   8   1        for(;delay > 0;delay--)
+   9   1          for(i = 0;i < 110;i++);
+  10   1      }
+  11          // 流水灯左向右
+  12          void led1(){
+  13   1        unsigned char a,i;
+  14   1          //a = 0xfe;
+  15   1          P0 =0xfe;
+  16   1          for(i = 0;i < 8;i++)        //流水灯一共8只，实现1到8只流水灯的循环
+  17   1          {
+  18   2            /*
+  19   2            P0 = _crol_(a,1);       //实现输出
+  20   2            a = P0;
+  21   2            */
+  22   2            P0 = P0 << 1;
+  23   2            Delay(100);            //100ms的延迟
+  24   2        } 
+  25   1      }
+*** WARNING C280 IN LINE 13 OF TEST.C: 'a': unreferenced local variable
+  26          //流水灯右到左
+  27          void led2(){
+  28   1        unsigned char a,i;
+  29   1          a = 0xef;
+  30   1          for(i = 0;i < 8;i++)        //流水灯一共8只，实现1到8只流水灯的循环
+  31   1          {
+  32   2            P0 = _cror_(a,1);       //实现输出
+  33   2            a = P0;
+  34   2            Delay(100);            //100ms的延迟
+  35   2          }
+  36   1      }
+  37          void main(void){
+  38   1        while(1)
+  39   1        {
+  40   2          led1();
+  41   2        }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     90    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.00   TEST                                                                  10/15/2021 16:10:12 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

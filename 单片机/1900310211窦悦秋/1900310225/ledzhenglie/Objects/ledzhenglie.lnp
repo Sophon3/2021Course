@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\test.obj" 
+TO ".\Objects\ledzhenglie" 
+PRINT(".\Listings\ledzhenglie.m51") RAMSIZE(256) 

@@ -1,0 +1,197 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        10/29/2021  15:33:39  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\dongshu.obj TO .\Objects\tesk3 PRINT (.\Listings\tesk3.m51)
+>>  RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\dongshu.obj (DONGSHU)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  .\Objects\tesk3 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         ?DT?DONGSHU
+            IDATA   001CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0006H     UNIT         ?PR?MAIN?DONGSHU
+                    0009H     0002H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0055H     UNIT         ?C?LIB_CODE
+            CODE    00EFH     0042H     UNIT         ?PR?DISPLAY?DONGSHU
+            CODE    0131H     0022H     UNIT         ?PR?TIME0?DONGSHU
+            CODE    0153H     001BH     UNIT         ?C_INITSEG
+            CODE    016EH     0010H     UNIT         ?PR?TIMER0INIT?DONGSHU
+            CODE    017EH     0009H     UNIT         ?PR?DELAY?DONGSHU
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\tesk3 (?C_STARTUP)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?DONGSHU
+  +--> ?C_INITSEG
+
+?PR?MAIN?DONGSHU
+  +--> ?PR?TIMER0INIT?DONGSHU
+  +--> ?PR?DISPLAY?DONGSHU
+
+?PR?DISPLAY?DONGSHU
+  +--> ?PR?DELAY?DONGSHU
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/29/2021  15:33:39  PAGE 2
+
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\tesk3 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:000EH         SEGMENT       ?C_C51STARTUP
+  I:001CH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0011H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:000EH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:000EH         LINE#         133
+  C:0010H         LINE#         134
+  C:0011H         LINE#         135
+  C:0012H         LINE#         136
+  C:0014H         LINE#         185
+  C:0017H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        DONGSHU
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:0008H         PUBLIC        select
+  B:00A8H.7       PUBLIC        EA
+  D:0010H         PUBLIC        number
+  D:00A8H         PUBLIC        IE
+  C:017EH         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/29/2021  15:33:39  PAGE 3
+
+
+  D:0012H         PUBLIC        digivalue
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:0131H         PUBLIC        time0
+  D:00C8H         PUBLIC        T2CON
+  C:016EH         PUBLIC        timer0Init
+  C:00EFH         PUBLIC        display
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DELAY
+  -------         DO            
+  D:0007H         SYMBOL        ii
+  -------         ENDDO         
+  C:017EH         LINE#         14
+  C:017EH         LINE#         15
+  C:017EH         LINE#         16
+  C:0180H         LINE#         17
+  C:0186H         LINE#         18
+  -------         ENDPROC       DELAY
+  -------         PROC          TIMER0INIT
+  C:016EH         LINE#         20
+  C:016EH         LINE#         21
+  C:0171H         LINE#         22
+  C:0174H         LINE#         23
+  C:0177H         LINE#         24
+  C:0179H         LINE#         25
+  C:017BH         LINE#         26
+  C:017DH         LINE#         27
+  -------         ENDPROC       TIMER0INIT
+  -------         PROC          DISPLAY
+  -------         DO            
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:00EFH         LINE#         29
+  C:00EFH         LINE#         30
+  C:00EFH         LINE#         31
+  C:00EFH         LINE#         32
+  C:00EFH         LINE#         33
+  C:00F1H         LINE#         34
+  C:00F1H         LINE#         35
+  C:00F8H         LINE#         36
+  C:00F8H         LINE#         37
+  C:010FH         LINE#         38
+  C:0128H         LINE#         41
+  C:0128H         LINE#         45
+  C:012BH         LINE#         46
+  -------         ENDPROC       DISPLAY
+  -------         PROC          MAIN
+  C:0003H         LINE#         50
+  C:0003H         LINE#         51
+  C:0003H         LINE#         53
+  C:0006H         LINE#         54
+  -------         ENDPROC       MAIN
+  -------         PROC          TIME0
+  C:0131H         LINE#         57
+  C:0135H         LINE#         59
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/29/2021  15:33:39  PAGE 4
+
+
+  C:0140H         LINE#         60
+  C:0146H         LINE#         61
+  C:0146H         LINE#         62
+  C:014EH         LINE#         63
+  -------         ENDPROC       TIME0
+  -------         ENDMOD        DONGSHU
+
+  -------         MODULE        ?C?UIDIV
+  C:009AH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=29.0 xdata=0 code=389
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

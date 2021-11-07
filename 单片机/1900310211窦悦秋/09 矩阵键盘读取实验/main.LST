@@ -1,0 +1,152 @@
+C51 COMPILER V9.00   MAIN                                                                  10/22/2021 17:12:13 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          
+   2          /***************************************************************************
+   3          实验名称： 矩阵键盘读取实验
+   4          
+   5          实验模块:  51单片机核心板、矩阵键盘区、液晶显示区（1602）
+   6          
+   7          实验接线：  51单片机核心板------矩阵键盘区
+   8                  P1.0~P1.3 --------- ROW1~ROW4
+   9                  P1.4~P1.7 --------- LINE1~LINE4       
+  10                    
+  11                
+  12                      
+  13          
+  14          更新时间：  2017.10.17
+  15          ***************************************************************************/
+  16          
+  17          #include <reg52.h>               
+  18          
+  19          unsigned char  dis_buf;       //显示缓存
+  20          unsigned char  temp;
+  21          unsigned char  key=0;         //键顺序码
+  22          
+  23          sbit  LCM_RS = P2^0;      //定义引脚
+  24          sbit  LCM_RW = P2^1;
+  25          sbit  LCM_E  = P2^2;
+  26          
+  27          #define uchar unsigned char   //宏定义，为方便编程
+  28          #define uint unsigned int
+  29          #define DIGI P0         //宏定义，将P0口定义为数码管段选接口
+  30          #define SELECT P2         //宏定义，将P2定义为数码管选择口
+  31          
+  32          
+  33          
+  34          
+  35          #define LCM_Data P0
+  36          #define Busy 0x80 //用于检测LCM状态字中的Busy标识
+  37          
+  38          uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7f,0x6f};
+  39          //uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07};
+  40          //显示的数字数组，依次为0，1，..，7
+  41          uchar select[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80}; //选择数码管数组，依次选择1，2，..，8
+  42          
+  43          
+  44          
+  45          
+  46          
+  47          void Delay5Ms(void)
+  48          {
+  49   1          unsigned int TempCyc = 5552;
+  50   1          while(TempCyc--);
+  51   1      }
+  52          
+  53          
+  54          // 键扫描子程序
+  55          void  keyscan(void)
+C51 COMPILER V9.00   MAIN                                                                  10/22/2021 17:12:13 PAGE 2   
+
+  56           { 
+  57   1          P1=0xF0;                //行线为输入，列线为输出，并置列线输出全为0
+  58   1         temp=P1;               //读P1口       
+  59   1          temp=temp&0xF0;
+  60   1          temp=~((temp>>4)|0xF0);
+  61   1          if(temp==1)
+  62   1              key=0;
+  63   1          else if(temp==2)
+  64   1              key=1;
+  65   1          else if(temp==4)
+  66   1              key=2;
+  67   1          else if(temp==8)
+  68   1              key=3;
+  69   1          P1=0x0F;                 //列线为输入，行线为输出，并置行线输出全为0  
+  70   1         temp=P1;                //读P1口 
+  71   1          temp=temp&0x0F;
+  72   1          temp=~(temp|0xF0);        
+  73   1          if(temp==1)
+  74   1              key=key+0;
+  75   1          else if(temp==2)
+  76   1              key=key+4;
+  77   1          else if(temp==4)
+  78   1              key=key+8;
+  79   1          else if(temp==8)
+  80   1              key=key+12;
+  81   1            
+  82   1           dis_buf = key;              //键值入显示缓存
+  83   1           dis_buf = dis_buf&0x0f;
+  84   1      
+  85   1         if(dis_buf>9)               //转换为ASCII码
+  86   1            dis_buf = dis_buf+0x37;
+  87   1          else
+  88   1           dis_buf = dis_buf+0x30;
+  89   1       }
+  90          
+  91          /*************************************************************/
+  92          //判断键是否按下
+  93          void  keydown(void)
+  94           {  
+  95   1          P1=0xF0;
+  96   1         Delay5Ms();
+  97   1        if(P1!=0xF0)
+  98   1        {
+  99   2          keyscan();
+ 100   2          }
+ 101   1       }
+ 102          
+ 103          /*************************************************************/
+ 104          // 主程序
+ 105          main()
+ 106           {
+ 107   1             while(1){
+ 108   2              keydown();
+ 109   2              switch(key)
+ 110   2              {
+ 111   3                case 0:SELECT= DIGI=digivalue[1];break;
+ 112   3                case 1:SELECT= DIGI=digivalue[3];break;
+ 113   3                case 2:SELECT= DIGI=digivalue[2];break;
+ 114   3                case 3:SELECT= DIGI=digivalue[3];break;
+ 115   3                case 4:SELECT= DIGI=digivalue[4];break;
+ 116   3                case 5:SELECT= DIGI=digivalue[6];break;
+ 117   3                case 6:SELECT= DIGI=digivalue[5];break;
+C51 COMPILER V9.00   MAIN                                                                  10/22/2021 17:12:13 PAGE 3   
+
+ 118   3                case 7:SELECT= DIGI=digivalue[8];break;
+ 119   3                case 8:SELECT= DIGI=digivalue[7];break;
+ 120   3                case 9:SELECT= DIGI=digivalue[9];break;
+ 121   3              }
+ 122   2             }
+ 123   1        }   
+ 124          
+ 125          /************************************************************/  
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    258    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     21    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
