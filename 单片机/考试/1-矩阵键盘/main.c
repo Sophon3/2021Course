@@ -30,7 +30,7 @@ void Delay5Ms(void)
 void  keyscan(void)
  { 
     P1=0xF0;                //行线为输入，列线为输出，并置列线输出全为0
-	 temp=P1;               //读P1口       
+	  temp=P1;               //读P1口       
     temp=temp&0xF0;
     temp=~((temp>>4)|0xF0);
     if(temp==1)

@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\dongshu.obj" 
+TO ".\Objects\tesk3" 
+PRINT(".\Listings\tesk3.m51") RAMSIZE(256) 

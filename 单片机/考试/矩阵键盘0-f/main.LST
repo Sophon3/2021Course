@@ -1,0 +1,166 @@
+C51 COMPILER V9.57.0.0   MAIN                                                              11/12/2021 18:01:24 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: E:\APP\keil5\KEIL_5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          /*************************************************************/
+   2          /********************* 24 矩阵键盘读取实验 *******************/
+   3          /*************************************************************/
+   4          /************************* 作者：XHCH ************************/
+   5          /*************************************************************/
+   6          /******************* 修改日期：2012年2月3日 ******************/
+   7          /*************************************************************/
+   8          /***************************************************************************
+   9          实验名称： 矩阵键盘读取实验
+  10          
+  11          
+  12          实验接线：  51单片机核心板------矩阵键盘区
+  13                  P1.0~P1.3 --------- ROW1~ROW4
+  14                  P1.4~P1.7 --------- LINE1~LINE4       
+  15                    
+  16          
+  17          
+  18          更新时间：  2017.10.17
+  19          ***************************************************************************/
+  20          
+  21          #include <reg52.h>               
+  22          
+  23          unsigned char  dis_buf;       //显示缓存
+  24          unsigned char  temp;
+  25          unsigned char  key=0;         //键顺序码
+  26          
+  27          sbit  LCM_RS = P2^0;      //定义引脚
+  28          sbit  LCM_RW = P2^1;
+  29          sbit  LCM_E  = P2^2;
+  30          #define DIGI P0         //宏定义，将P0口定义为数码管段选接口
+  31          #define SELECT P3         //宏定义，将P2定义为数码管选择口
+  32          
+  33          
+  34          #define Busy 0x80 //用于检测LCM状态字中的Busy标识
+  35          
+  36          //unsigned char Code[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
+  37          unsigned char Code[]={1,2,3,10,4,5,6,11,7,8,9,12,14,0,15,13};
+  38          // 共阴极数码管1-f{0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+  39          unsigned char select[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80}; //选择数码管数组，依次选择1，2，..，8
+  40          unsigned char digivalue[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71
+             -};
+  41          //unsigned char digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7f,0x6f};
+  42          
+  43          /**********************************************************/
+  44          //5ms延时
+  45          void Delay5Ms(void)
+  46          {
+  47   1          unsigned int TempCyc = 552;
+  48   1          while(TempCyc--);
+  49   1      }
+  50          void delay() //延迟函数，决定数码管跳变的间隔时间
+  51          { 
+  52   1        unsigned char ii=200; //若发现数码管闪烁，调节这里即可
+  53   1        while(ii--);
+  54   1      }
+C51 COMPILER V9.57.0.0   MAIN                                                              11/12/2021 18:01:24 PAGE 2   
+
+  55          
+  56          /**********************************************************/
+  57          // 键扫描子程序
+  58          void  keyscan(void)
+  59           { 
+  60   1          P1=0xF0;                //行线为输入，列线为输出，并置列线输出全为0
+  61   1         temp=P1;               //读P1口       
+  62   1          temp=temp&0xF0;
+  63   1          temp=~((temp>>4)|0xF0);
+  64   1          if(temp==1)
+  65   1              key=0;
+  66   1          else if(temp==2)
+  67   1              key=1;
+  68   1          else if(temp==4)
+  69   1              key=2;
+  70   1          else if(temp==8)
+  71   1              key=3;
+  72   1          P1=0x0F;                 //列线为输入，行线为输出，并置行线输出全为0  
+  73   1         temp=P1;                //读P1口 
+  74   1          temp=temp&0x0F;
+  75   1          temp=~(temp|0xF0);        
+  76   1          if(temp==1)
+  77   1              key=key+0;
+  78   1          else if(temp==2)
+  79   1              key=key+4;
+  80   1          else if(temp==4)
+  81   1              key=key+8;
+  82   1          else if(temp==8)
+  83   1              key=key+12;
+  84   1            
+  85   1           dis_buf = key;              //键值入显示缓存
+  86   1           dis_buf = dis_buf&0x0f;
+  87   1      
+  88   1         if(dis_buf>9)               //转换为ASCII码
+  89   1            dis_buf = dis_buf+0x37;
+  90   1          else
+  91   1           dis_buf = dis_buf+0x30;
+  92   1       }
+  93          
+  94          /*************************************************************/
+  95          //判断键是否按下
+  96          void  keydown(void)
+  97           {  
+  98   1          P1=0xF0;
+  99   1         Delay5Ms();
+ 100   1        if(P1!=0xF0)
+ 101   1        {
+ 102   2          keyscan();
+ 103   2          }
+ 104   1       }
+ 105          
+ 106          /*************************************************************/
+ 107          // 主程序
+ 108          main()
+ 109           {
+ 110   1          unsigned char i,m;
+ 111   1         // P0=0xFF;                    //置P0口
+ 112   1         // P2=0xFF;                    //置P2口  
+ 113   1      
+ 114   1          while(1)
+ 115   1          { 
+ 116   2             keydown();
+C51 COMPILER V9.57.0.0   MAIN                                                              11/12/2021 18:01:24 PAGE 3   
+
+ 117   2            for(i=0;i<1;i++)    //8个数码管轮流显示
+ 118   2          {
+ 119   3            delay();
+ 120   3            switch(i)
+ 121   3            {
+ 122   4              
+ 123   4              case 0:SELECT=select[i]; DIGI=digivalue[Code[key]];break;
+ 124   4              //case 1:SELECT=select[i]; DIGI=digivalue[Code[key]/10];break;
+ 125   4              //case 2:SELECT=select[i]; DIGI=digivalue[0];break;
+ 126   4              //case 2:SELECT=select[i]; DIGI=digivalue[number/100];break;
+ 127   4            }
+ 128   3              //选择第i个数码管
+ 129   3              //显示i
+ 130   3            //delay();
+ 131   3          } 
+ 132   2          delay();
+ 133   2          
+ 134   2          
+ 135   2      
+ 136   2          }
+ 137   1        }   
+*** WARNING C280 IN LINE 110 OF main.c: 'm': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    208    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     43       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

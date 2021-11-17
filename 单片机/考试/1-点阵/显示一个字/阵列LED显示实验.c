@@ -21,7 +21,7 @@ void delay(uint t)
 {
 	uchar i;
 	for(;t>0;t++)
-		for(i = 0;i<100;i++);
+		for(i = 0;i<2;i++);
 }
 
 void main()
@@ -36,6 +36,7 @@ void main()
 	{
 		for(i=0;i<16;i++)//循环的次数
 		{
+			/*
 			for(d = 0;d<14;d++)//给存储数组赋值，
 			{
 				int tax,tay;
@@ -45,8 +46,8 @@ void main()
 				temp[2*d+1] = temp[2*d+3];
 				temp[30] = tax;
 				temp[31] = tay;
-			}
-			for(k=0;k<100;k++)
+			}*/
+			for(k=0;k<2;k++)
 			{
 				P1 = 0; //设置初值
 				P3 = 0;

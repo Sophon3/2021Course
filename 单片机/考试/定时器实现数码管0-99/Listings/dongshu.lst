@@ -1,0 +1,107 @@
+C51 COMPILER V9.57.0.0   DONGSHU                                                           11/12/2021 17:07:22 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE DONGSHU
+OBJECT MODULE PLACED IN .\Objects\dongshu.obj
+COMPILER INVOKED BY: E:\APP\keil5\KEIL_5\C51\BIN\C51.EXE dongshu.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\L
+                    -istings\dongshu.lst) TABS(2) OBJECT(.\Objects\dongshu.obj)
+
+line level    source
+
+   1          /***************************************************************************
+   2          实验名称： 数码管动态扫描实验
+   3          
+   4          实验模块:  51单片机核心板、动态扫描数码管区
+   5          
+   6          实验接线：  51单片机核心板------动态扫描数码管区
+   7                    P0----------------J6
+   8                    P2----------------J5
+   9                      
+  10          现象描述：  8位数码管从左向右依次显示“0~7”
+  11          
+  12          更新时间：2017.10.17
+  13          ***************************************************************************/
+  14          
+  15          #include<reg52.h> 
+  16          #define uchar unsigned char   //宏定义，为方便编程
+  17          #define uint unsigned int
+  18          #define DIGI P0         //宏定义，将P0口定义为数码管段选接口
+  19          #define SELECT P2         //宏定义，将P2定义为数码管选择口
+  20          
+  21          uint number=0;
+  22          uint cn=0;
+  23          uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7f,0x6f};
+  24          //uchar digivalue[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07};
+  25          //显示的数字数组，依次为0，1，..，7
+  26          uchar select[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80}; //选择数码管数组，依次选择1，2，..，8
+  27          
+  28          void delay() //延迟函数，决定数码管跳变的间隔时间
+  29          { 
+  30   1        uchar ii=200; //若发现数码管闪烁，调节这里即可
+  31   1        while(ii--);
+  32   1      }
+  33          
+  34          void timer0Init(){
+  35   1        TMOD=0x01;
+  36   1        TH0=(65536-45872)/256;
+  37   1        TL0=(65536-45872)%256;
+  38   1        EA=1;
+  39   1        ET0=1;
+  40   1        TR0=1;
+  41   1      }
+  42          
+  43          void display(){
+  44   1        uchar i=0;
+  45   1        while(1)       //00310209
+  46   1        { 
+  47   2          for(i=0;i<3;i++)    //8个数码管轮流显示
+  48   2          {
+  49   3            switch(i)
+  50   3            {
+  51   4              case 0:SELECT=select[i]; DIGI=digivalue[number%10];break;
+  52   4              case 1:SELECT=select[i]; DIGI=digivalue[number/10%10];break;
+  53   4              case 2:SELECT=select[i]; DIGI=digivalue[number/100];break;
+  54   4            }
+C51 COMPILER V9.57.0.0   DONGSHU                                                           11/12/2021 17:07:22 PAGE 2   
+
+  55   3              //选择第i个数码管
+  56   3            //DIGI=0x90;
+  57   3              //显示i
+  58   3            delay();
+  59   3          } 
+  60   2        }
+  61   1      }
+  62          
+  63          main() //主函数
+  64          {
+  65   1        
+  66   1        timer0Init();
+  67   1        display();
+  68   1      }
+  69          
+  70          void time0() interrupt 1
+  71          {
+  72   1          if(number>999){
+  73   2            number=0;
+  74   2          }
+  75   1          if(cn==20){
+  76   2          number++;
+  77   2          cn=0;
+  78   2          }
+  79   1          cn++;
+  80   1      }
+*** WARNING C290 IN LINE 68 OF dongshu.c: missing return value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    179    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     22    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
